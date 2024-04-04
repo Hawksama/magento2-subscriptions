@@ -19,6 +19,7 @@
                 </resource>
                 <resource id="Magento_Sales::sales">
                     <resource id="Mollie_Subscriptions::view_subscriptions" title="View active Mollie subscriptions" translate="title" />
+                    <resource id="Mollie_Subscriptions::sent_email_overview" title="View emails sent by Mollie subscriptions" translate="title" />
                 </resource>
             </resource>
         </resources>

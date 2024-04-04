@@ -33,17 +33,23 @@ class SendPrepaymentReminderEmail
      * @var SubscriptionToProductEmailVariables
      */
     private $emailVariables;
+    /**
+     * @var LogEmail
+     */
+    private $logEmail;
 
     public function __construct(
         Config $config,
         TransportBuilder $transportBuilder,
         IdentityInterface $identityContainer,
-        SubscriptionToProductEmailVariables $emailVariables
+        SubscriptionToProductEmailVariables $emailVariables,
+        LogEmail $logEmail
     ) {
         $this->config = $config;
         $this->transportBuilder = $transportBuilder;
         $this->identityContainer = $identityContainer;
         $this->emailVariables = $emailVariables;
+        $this->logEmail = $logEmail;
     }
 
     public function execute(SubscriptionToProductInterface $subscriptionToProduct)
@@ -64,6 +70,7 @@ class SendPrepaymentReminderEmail
         }
 
         $transport = $builder->getTransport();
+        $this->logEmail->execute($transport);
         $transport->sendMessage();
     }
 }

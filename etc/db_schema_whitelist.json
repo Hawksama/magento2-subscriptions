@@ -13,5 +13,17 @@
     "constaint": {
       "PRIMARY": true
     }
+  },
+  "mollie_subscriptions_sentemail": {
+    "column": {
+      "entity_id": true,
+      "subject": true,
+      "sender": true,
+      "recipients": true,
+      "sent_at": true
+    },
+    "constaint": {
+      "PRIMARY": true
+    }
   }
 }

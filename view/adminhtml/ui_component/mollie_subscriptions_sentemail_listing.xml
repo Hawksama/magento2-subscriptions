@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">.mollie_subscriptions_sentemail_listingmollie_subscriptions_sentemail_listing_data_source</item>
+            <item name="deps" xsi:type="string">mollie_subscriptions_sentemail_listing.mollie_subscriptions_sentemail_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <deps>
+            <dep>mollie_subscriptions_sentemail_listing_data_source</dep>
+        </deps>
+        <spinner>mollie_subscriptions_sentemail_columns</spinner>
+    </settings>
+    <dataSource name="mollie_subscriptions_sentemail_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+        </settings>
+        <aclResource>Subscriptions_Mollie::SentEmail</aclResource>
+        <dataProvider name="mollie_subscriptions_sentemail_listing_data_source" class="Mollie\Subscriptions\Ui\DataProvider\SentEmail\ListingDataProvider">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <paging name="listing_paging"/>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <settings>
+                <selectProvider>mollie_subscriptions_sentemail_listing.mollie_subscriptions_sentemail_listing.mollie_subscriptions_sentemail_columns.ids</selectProvider>
+                <indexField>entity_id</indexField>
+            </settings>
+            <action name="delete">
+                <settings>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                    <url path="*/*/massDelete"/>
+                    <confirm>
+                        <title translate="true">Delete items</title>
+                        <message translate="true">Are you sure you want to delete the selected items?</message>
+                    </confirm>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="mollie_subscriptions_sentemail_columns">
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id">
+            <settings>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="subject">
+            <settings>
+                <label translate="true">Subject</label>
+            </settings>
+        </column>
+        <column name="sender">
+            <settings>
+                <label translate="true">Sender</label>
+            </settings>
+        </column>
+        <column name="recipients">
+            <settings>
+                <label translate="true">Recipients</label>
+            </settings>
+        </column>
+        <column name="sent_at">
+            <settings>
+                <label translate="true">Sent At</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+    </columns>
+</listing>
