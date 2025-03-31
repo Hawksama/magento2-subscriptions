@@ -191,7 +191,7 @@ class SubscriptionOptions
     {
         $this->options['webhookUrl'] = $this->urlBuilder->getUrl(
             'mollie-subscriptions/api/webhook',
-            ['___store' => $this->storeManager->getStore($this->order->getStoreId())->getCode()]
+            ['___store' => $this->storeManager->getStore($this->order->getStoreId())->getId()]
         );
     }
 
