@@ -88,9 +88,11 @@ class ChangeAddToCartText implements ObserverInterface
         }
 
         $subscriptionOptionsBlock = $block->getLayout()->createBlock(SubscriptionOptions::class)->toHtml();
+        $subscriptionOptionsBlock = str_replace('@', 'at-----', $subscriptionOptionsBlock);
+
         $newHtml = $this->domDocumentFactory->create();
         $newHtml->preserveWhiteSpace = false;
-        $newHtml->formatOutput = true;
+        $newHtml->formatOutput = false;
         $newHtml->loadHTML($subscriptionOptionsBlock, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
 
         // Import our HTML before the regular "add to cart button".
@@ -100,7 +102,9 @@ class ChangeAddToCartText implements ObserverInterface
         // Remove the button
         $button->parentNode->removeChild($button);
 
-        $transport->setData('html', $document->saveHTML());
+        $saveHTML = $document->saveHTML();
+        $saveHTML = str_replace('at-----', '@', $saveHTML);
+        $transport->setData('html', $saveHTML);
     }
 
     public function getProduct(): ?ProductInterface
