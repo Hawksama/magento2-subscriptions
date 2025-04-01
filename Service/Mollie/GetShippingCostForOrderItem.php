@@ -103,6 +103,10 @@ class GetShippingCostForOrderItem
     {
         $request = $this->rateRequestFactory->create();
 
+        $order = $orderItem->getOrder();
+        $store = $order->getStore();
+        $websiteId = $store->getWebsiteId();
+
         // Some shipping methods need this (Yes, I'm looking at you, TableRates and Amasty)
         $address = $this->order->getShippingAddress();
 
@@ -114,6 +118,8 @@ class GetShippingCostForOrderItem
         $orderItem->setAddress($address);
 
         $request->setAllItems([$orderItem]);
+        $request->setStoreId($order->getStoreId());
+        $request->setWebsiteId($websiteId);
         $request->setDestCountryId($address->getCountryId());
         $request->setDestRegionId($address->getRegionId());
         $request->setDestPostcode($address->getPostcode());
