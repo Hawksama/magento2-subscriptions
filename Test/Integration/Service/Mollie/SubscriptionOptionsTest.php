@@ -306,6 +306,43 @@ class SubscriptionOptionsTest extends IntegrationTestCase
     }
 
     /**
+     * @dataProvider addsTheStartDate
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     *
+     * @param $input
+     * @param $expected
+     */
+    public function testAddsTheDelayedStartDate($input, $expected)
+    {
+        $order = $this->loadOrder('100000001');
+        $items = $order->getItems();
+
+        /** @var OrderItemInterface $orderItem */
+        $orderItem = array_shift($items);
+        $this->setOptionIdOnOrderItem($orderItem, 'custom');
+        $this->setTheSubscriptionOnTheProduct(
+            $orderItem->getProduct(),
+            '{"identifier":"custom",' .
+            '"title":"A new custom subscription",' .
+            '"interval_amount":"' . $input['amount'] . '",' .
+            '"interval_type":"' . $input['type'] . '",' .
+            '"repetition_amount":"10",' .
+            '"repetition_type":"times"' .
+            '}'
+        );
+
+        /** @var SubscriptionOptions $instance */
+        $instance = $this->objectManager->create(SubscriptionOptions::class);
+        $result = $instance->forOrder($order);
+
+        $this->assertCount(1, $result);
+        $subscription = $result[0];
+        $this->assertInstanceOf(SubscriptionOption::class, $subscription);
+        $this->assertArrayHasKey('startDate', $subscription->toArray());
+        $this->assertEquals($expected->format('Y-m-d'), $subscription->toArray()['startDate']);
+    }
+
+    /**
      * @magentoDataFixture Magento/Sales/_files/order.php
      *
      * @return void

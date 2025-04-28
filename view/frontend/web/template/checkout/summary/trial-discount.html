@@ -1,0 +1,28 @@
+<!-- ko if: hasTrialProductInCart -->
+
+<tr class="totals mollie-subscriptions mollie-subscriptions-product excl">
+    <th class="mark" colspan="1" scope="row" data-bind="i18n: 'Subscription Trial'"></th>
+    <td class="amount">
+        <span class="price" data-bind="text: formattedProduct()"></span>
+    </td>
+</tr>
+
+    <!-- ko if: hasDiscount -->
+    <tr class="totals mollie-subscriptions mollie-subscriptions-discount excl">
+        <th class="mark" colspan="1" scope="row" data-bind="i18n: '- Subscription Discount'"></th>
+        <td class="amount">
+            <span class="price" data-bind="text: formattedDiscount()"></span>
+        </td>
+    </tr>
+    <!-- /ko -->
+
+    <!-- ko if: hasShipping -->
+    <tr class="totals mollie-subscriptions mollie-subscriptions-shipping excl">
+        <th class="mark" colspan="1" scope="row" data-bind="i18n: '- Subscription Shipping'"></th>
+        <td class="amount">
+            <span class="price" data-bind="text: formattedShipping()"></span>
+        </td>
+    </tr>
+    <!-- /ko -->
+
+<!-- /ko -->
