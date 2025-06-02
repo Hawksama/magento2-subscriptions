@@ -44,7 +44,7 @@ class ProductSubscriptionOption
         string $interval_amount,
         string $interval_type,
         string $repetition_type,
-        string $repetition_amount = null
+        ?string $repetition_amount = null
     ) {
         $this->identifier = $identifier;
         $this->title = $title;

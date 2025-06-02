@@ -1,7 +1,12 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 namespace Mollie\Subscriptions\Test\Integration\Service\Email;
 
+use Magento\Framework\DB\Adapter\ConnectionException;
 use Mollie\Payment\Test\Integration\IntegrationTestCase;
 use Mollie\Subscriptions\Api\Data\SubscriptionToProductInterface;
 use Mollie\Subscriptions\Api\SubscriptionToProductRepositoryInterface;
@@ -33,9 +38,13 @@ class RetrieveRecordsForPrePaymentReminderTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        /** @var SubscriptionToProduct $model */
-        $model = $this->objectManager->create(SubscriptionToProduct::class);
-        $model->getCollection()->getConnection()->truncateTable($model->getResource()->getMainTable());
+        try {
+            /** @var SubscriptionToProduct $model */
+            $model = $this->objectManager->create(SubscriptionToProduct::class);
+            $model->getCollection()->getConnection()->truncateTable($model->getResource()->getMainTable());
+        } catch (ConnectionException $exception) {
+            // ...
+        }
     }
 
     /**
@@ -88,7 +97,7 @@ class RetrieveRecordsForPrePaymentReminderTest extends IntegrationTestCase
         $this->assertEquals(0, $subscriptions->getTotalCount());
     }
 
-    private function createModel(\DateTimeImmutable $date, \DateTimeImmutable $lastReminderDate = null): SubscriptionToProductInterface
+    private function createModel(\DateTimeImmutable $date, ?\DateTimeImmutable $lastReminderDate = null): SubscriptionToProductInterface
     {
         /** @var SubscriptionToProductInterface $model */
         $model = $this->objectManager->create(SubscriptionToProductInterface::class);

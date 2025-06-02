@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 namespace Mollie\Subscriptions\Test\Integration\Controller\Api;
 
@@ -117,7 +121,11 @@ class WebhookTest extends ControllerTestCase
         $this->dispatch('mollie-subscriptions/api/webhook?id=' . $transactionId);
         $this->assertEquals(200, $this->getResponse()->getStatusCode());
 
-        $this->assertEquals(0, $spy->getInvocationCount());
+        $this->assertEquals(
+            0,
+            // PHPUnit 9 and 10 compatibility fun
+            method_exists($spy, 'getInvocationCount') ? $spy->getInvocationCount() : $spy->numberOfInvocations()
+        );
     }
 
     /**

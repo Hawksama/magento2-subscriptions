@@ -1,8 +1,13 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 namespace Mollie\Subscriptions\Test\Integration\Cron;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DB\Adapter\ConnectionException;
 use Mollie\Payment\Test\Integration\IntegrationTestCase;
 use Mollie\Subscriptions\Api\Data\SubscriptionToProductInterface;
 use Mollie\Subscriptions\Api\SubscriptionToProductRepositoryInterface;
@@ -26,9 +31,13 @@ class SendPrePaymentReminderEmailCronTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        /** @var SubscriptionToProduct $model */
-        $model = $this->objectManager->create(SubscriptionToProduct::class);
-        $model->getCollection()->getConnection()->truncateTable($model->getResource()->getMainTable());
+        try {
+            /** @var SubscriptionToProduct $model */
+            $model = $this->objectManager->create(SubscriptionToProduct::class);
+            $model->getCollection()->getConnection()->truncateTable($model->getResource()->getMainTable());
+        } catch (ConnectionException $exception) {
+            // ...
+        }
     }
 
     public function testHasADefaultScheduleAvailable(): void
@@ -63,7 +72,11 @@ class SendPrePaymentReminderEmailCronTest extends IntegrationTestCase
 
         $instance->execute();
 
-        $this->assertEquals(0, $spy->getInvocationCount());
+        $this->assertEquals(
+            0,
+            // PHPUnit 9 and 10 compatibility fun
+            method_exists($spy, 'getInvocationCount') ? $spy->getInvocationCount() : $spy->numberOfInvocations()
+        );
     }
 
     /**
@@ -88,7 +101,11 @@ class SendPrePaymentReminderEmailCronTest extends IntegrationTestCase
 
         $instance->execute();
 
-        $this->assertEquals(0, $spy->getInvocationCount());
+        $this->assertEquals(
+            0,
+            // PHPUnit 9 and 10 compatibility fun
+            method_exists($spy, 'getInvocationCount') ? $spy->getInvocationCount() : $spy->numberOfInvocations()
+        );
     }
 
     /**
@@ -113,7 +130,11 @@ class SendPrePaymentReminderEmailCronTest extends IntegrationTestCase
 
         $instance->execute();
 
-        $this->assertEquals(2, $spy->getInvocationCount());
+        $this->assertEquals(
+            2,
+            // PHPUnit 9 and 10 compatibility fun
+            method_exists($spy, 'getInvocationCount') ? $spy->getInvocationCount() : $spy->numberOfInvocations()
+        );
 
         // Assert that the last_reminder_date is updated.
         $reloaded = $this->repository->get($models['future']->getEntityId());
@@ -140,7 +161,7 @@ class SendPrePaymentReminderEmailCronTest extends IntegrationTestCase
         ];
     }
 
-    private function createModel(\DateTimeImmutable $date, \DateTimeImmutable $lastReminderDate = null): SubscriptionToProductInterface
+    private function createModel(\DateTimeImmutable $date, ?\DateTimeImmutable $lastReminderDate = null): SubscriptionToProductInterface
     {
         /** @var SubscriptionToProductInterface $model */
         $model = $this->objectManager->create(SubscriptionToProductInterface::class);

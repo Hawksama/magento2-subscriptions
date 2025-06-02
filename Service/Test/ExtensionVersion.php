@@ -1,6 +1,6 @@
 <?php
-/**
- * Copyright © Magmodules.eu. All rights reserved.
+/*
+ * Copyright Magmodules.eu. All rights reserved.
  * See COPYING.txt for license details.
  */
 declare(strict_types=1);
@@ -116,7 +116,7 @@ class ExtensionVersion
         $extensionVersion = $this->config->getExtensionVersion();
         try {
             $data = $this->file->fileGetContents(
-                sprintf('http://version.magmodules.eu/%s.json', Config::EXTENSION_CODE)
+                sprintf('https://version.magmodules.eu/%s.json', Config::EXTENSION_CODE)
             );
         } catch (Exception $e) {
             $this->logRepository->addDebugLog('Extension version test', $e->getMessage());
