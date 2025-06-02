@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 declare(strict_types=1);
 
@@ -35,8 +39,9 @@ class GetTrialDiscountForCart
         $product = 0;
         $shipping = 0;
         $discount = 0;
+        $itemCount = 0;
         $shippingAddress = $cart->getShippingAddress();
-        foreach ($cart->getItems() as $cartItem) {
+        foreach ($cart->getItems() ?? [] as $cartItem) {
             if (!$cartItem->getProduct()->getData('mollie_subscription_product')) {
                 continue;
             }
@@ -51,6 +56,7 @@ class GetTrialDiscountForCart
                 continue;
             }
 
+            $itemCount++;
             $product -= $cartItem->getRowTotalInclTax();
 
             $shippingAddress->requestShippingRates($cartItem);
@@ -62,6 +68,7 @@ class GetTrialDiscountForCart
             'product' => $product + 0.01,
             'shipping' => $shipping,
             'discount' => $discount,
+            'itemCount' => $itemCount,
         ]);
     }
 }

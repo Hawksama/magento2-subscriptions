@@ -46,7 +46,7 @@ class CheckoutConfig implements \Magento\Checkout\Model\ConfigProviderInterface
             'mollie' => [
                 'subscriptions' => [
                     'has_subscription_products_in_cart' => $this->cartContainsSubscriptionProduct->check($cart),
-                    'has_trial_products_in_cart' => $trialDiscountForCart->getProduct() != 0,
+                    'has_trial_products_in_cart' => $trialDiscountForCart->getItemCount() != 0,
                     'trial' => [
                         'product' => $trialDiscountForCart->getProduct(),
                         'shipping' => $trialDiscountForCart->getShipping(),
