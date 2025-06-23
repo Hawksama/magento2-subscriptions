@@ -6,6 +6,7 @@
 Day(s),Dag(en)
 Week(s),Week(en)
 Month(s),Maand(en)
+Year(s),Jaar(en)
 Times,Keer
 Infinite,Oneindig
 Enabled,Ingeschakeld
@@ -39,6 +40,8 @@ Disabled,Uitgeschakeld
 "Every %1 weeks","Elke %1 weken"
 "Every month","Elke maand"
 "Every %1 months","Elke %1 maanden"
+"Every year","Elk jaar"
+"Every %1 years","Elke %1 jaar"
 "Every %1 %2","Elke %1 %2"
 Cancel,Annuleren
 Delete,Verwijderen

@@ -14,6 +14,7 @@ class IntervalType extends AbstractSource
     const DAYS = 'days';
     const WEEKS = 'weeks';
     const MONTHS = 'months';
+    const YEARS = 'years';
 
     public function getAllOptions()
     {
@@ -33,6 +34,10 @@ class IntervalType extends AbstractSource
             [
                 'value' => static::MONTHS,
                 'label' => __('Month(s)'),
+            ],
+            [
+                'value' => static::YEARS,
+                'label' => __('Year(s)'),
             ],
         ];
     }

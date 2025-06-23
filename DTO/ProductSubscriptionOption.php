@@ -41,6 +41,10 @@ class ProductSubscriptionOption
      * @var int|null
      */
     private $trial_days;
+    /**
+     * @var float|null
+     */
+    private $price;
 
     public function __construct(
         string $identifier,
@@ -49,7 +53,8 @@ class ProductSubscriptionOption
         string $interval_type,
         string $repetition_type,
         ?string $repetition_amount = null,
-        ?int $trial_days = null
+        ?int $trial_days = null,
+        ?float $price = null
     ) {
         $this->identifier = $identifier;
         $this->title = $title;
@@ -58,6 +63,7 @@ class ProductSubscriptionOption
         $this->repetition_amount = $repetition_amount;
         $this->repetition_type = $repetition_type;
         $this->trial_days = $trial_days;
+        $this->price = $price;
     }
 
     /**
@@ -111,5 +117,10 @@ class ProductSubscriptionOption
     public function getTrialDays(): ?int
     {
         return $this->trial_days;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
     }
 }
