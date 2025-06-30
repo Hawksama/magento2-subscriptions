@@ -14,6 +14,10 @@
     <preference for="Mollie\Subscriptions\Api\Data\SubscriptionToProductInterface" type="Mollie\Subscriptions\Model\Data\SubscriptionToProduct"/>
     <preference for="Mollie\Subscriptions\Api\Data\SubscriptionToProductSearchResultsInterface" type="Mollie\Subscriptions\Model\SubscriptionToProductSearchResults"/>
 
+    <preference for="Mollie\Subscriptions\Api\SentEmailRepositoryInterface" type="Mollie\Subscriptions\Model\SentEmailRepository" />
+    <preference for="Mollie\Subscriptions\Api\Data\SentEmailInterface" type="Mollie\Subscriptions\Model\Data\SentEmail"/>
+    <preference for="Mollie\Subscriptions\Api\Data\SentEmailSearchResultsInterface" type="Mollie\Subscriptions\Model\SentEmailSearchResults"/>
+
     <type name="Mollie\Subscriptions\Logger\ErrorLogger">
         <arguments>
             <argument name="name" xsi:type="string">MollieSubscriptionsError</argument>
@@ -169,4 +173,18 @@
     <type name="Magento\Checkout\Model\Session">
         <plugin name="mollie_subscriptions_check_for_duplicates_in_cart" type="Mollie\Subscriptions\Plugin\Checkout\Model\PreventDuplicateSubscriptionProductsInCart" />
     </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mollie_subscriptions_sentemail_listing_data_source" xsi:type="string">MollieSubscriptionsSentEmailCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="MollieSubscriptionsSentEmailCollection" type="Mollie\Subscriptions\Ui\DataProvider\SentEmail\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mollie_subscriptions_sentemail</argument>
+            <argument name="resourceModel" xsi:type="string">Mollie\Subscriptions\Model\ResourceModel\SentEmail</argument>
+        </arguments>
+    </virtualType>
 </config>

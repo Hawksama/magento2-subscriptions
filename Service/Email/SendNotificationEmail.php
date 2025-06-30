@@ -37,6 +37,11 @@ class SendNotificationEmail
     private $senderResolver;
 
     /**
+     * @var LogEmail
+     */
+    private $logEmail;
+
+    /**
      * @var string
      */
     private $sendTo;
@@ -45,7 +50,6 @@ class SendNotificationEmail
      * @var string
      */
     private $enabledMethod;
-
     /**
      * @var string
      */
@@ -57,6 +61,7 @@ class SendNotificationEmail
         IdentityInterface $identityContainer,
         SubscriptionToProductEmailVariables $emailVariables,
         SenderResolverInterface $senderResolver,
+        LogEmail $logEmail,
         string $configSource,
         string $sendTo
     ) {
@@ -65,6 +70,7 @@ class SendNotificationEmail
         $this->identityContainer = $identityContainer;
         $this->emailVariables = $emailVariables;
         $this->senderResolver = $senderResolver;
+        $this->logEmail = $logEmail;
         $this->sendTo = $sendTo;
 
         $this->enabledMethod = 'enable' . ucfirst($configSource) . 'Email';
@@ -90,6 +96,7 @@ class SendNotificationEmail
         $this->setTo($builder, $subscriptionToProduct);
 
         $transport = $builder->getTransport();
+        $this->logEmail->execute($transport);
         $transport->sendMessage();
     }
 

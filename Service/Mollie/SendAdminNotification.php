@@ -7,15 +7,11 @@ namespace Mollie\Subscriptions\Service\Mollie;
 use Magento\Framework\Mail\Template\SenderResolverInterface;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\UrlInterface;
-use Magento\Sales\Model\Order\Email\Container\IdentityInterface;
 use Mollie\Subscriptions\Config;
+use Mollie\Subscriptions\Service\Email\LogEmail;
 
 class SendAdminNotification
 {
-    /**
-     * @var \Magento\Framework\Notification\NotifierInterface
-     */
-    private $notifier;
     /**
      * @var Config
      */
@@ -25,10 +21,6 @@ class SendAdminNotification
      */
     private $transportBuilder;
     /**
-     * @var IdentityInterface
-     */
-    private $identityContainer;
-    /**
      * @var SenderResolverInterface
      */
     private $senderResolver;
@@ -36,17 +28,23 @@ class SendAdminNotification
      * @var UrlInterface
      */
     private $urlInterface;
+    /**
+     * @var LogEmail
+     */
+    private $logEmail;
 
     public function __construct(
         Config $config,
         TransportBuilder $transportBuilder,
         SenderResolverInterface $senderResolver,
-        UrlInterface $urlInterface
+        UrlInterface $urlInterface,
+        LogEmail $logEmail
     ) {
         $this->config = $config;
         $this->transportBuilder = $transportBuilder;
         $this->senderResolver = $senderResolver;
         $this->urlInterface = $urlInterface;
+        $this->logEmail = $logEmail;
     }
 
     public function send(string $id, \Throwable $exception): void
@@ -73,6 +71,7 @@ class SendAdminNotification
         $builder->addTo($receiver['email'], $receiver['name']);
 
         $transport = $builder->getTransport();
+        $this->logEmail->execute($transport);
         $transport->sendMessage();
     }
 }
