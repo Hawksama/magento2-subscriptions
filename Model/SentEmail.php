@@ -29,7 +29,7 @@ class SentEmail extends AbstractModel
         DataObjectHelper $dataObjectHelper,
         SentEmailInterfaceFactory $sentEmailDataFactory,
         ResourceModel\SentEmail $resource,
-        AbstractDb $resourceCollection = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
