@@ -430,7 +430,7 @@ class SubscriptionOptionsTest extends IntegrationTestCase
         $this->assertArrayNotHasKey('shippingAddressId', $subscription->toArray()['metadata']);
     }
 
-    public function includesTheCorrectIntervalProvider()
+    public function includesTheCorrectIntervalProvider(): array
     {
         return [
             'day' => [['amount' => 7, 'type' => IntervalType::DAYS], '7 days'],
@@ -439,10 +439,11 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], '1 months'],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], '3 months'],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], '3 months'],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], '365 days'],
         ];
     }
 
-    public function addsADescriptionProvider()
+    public function addsADescriptionProvider(): array
     {
         return [
             'single day' => [['amount' => 1, 'type' => IntervalType::DAYS], 'Every day'],
@@ -452,10 +453,11 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], 'Every month'],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], 'Every 3 months'],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], 'Every 3 months'],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], 'Every year'],
         ];
     }
 
-    public function addsTheStartDate()
+    public function addsTheStartDate(): array
     {
         $now = new \DateTimeImmutable('now');
 
@@ -467,6 +469,7 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P1M'))],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P3M'))],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P3M'))],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], $now->add(new \DateInterval('P365D'))],
         ];
     }
 
