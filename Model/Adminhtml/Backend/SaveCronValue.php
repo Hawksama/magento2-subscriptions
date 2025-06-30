@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 namespace Mollie\Subscriptions\Model\Adminhtml\Backend;
 
@@ -27,8 +31,8 @@ class SaveCronValue extends Value
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
         WriterInterface $configWriter,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);

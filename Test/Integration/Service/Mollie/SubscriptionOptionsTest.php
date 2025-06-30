@@ -470,7 +470,7 @@ class SubscriptionOptionsTest extends IntegrationTestCase
         ];
     }
 
-    private function setTheSubscriptionOnTheProduct(ProductInterface $product, string $customSubscription = null): void
+    private function setTheSubscriptionOnTheProduct(ProductInterface $product, ?string $customSubscription = null): void
     {
         $product->setData('mollie_subscription_product', 1);
 

@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright Magmodules.eu. All rights reserved.
- *  See COPYING.txt for license details.
+ * See COPYING.txt for license details.
  */
 declare(strict_types=1);
 
@@ -86,7 +86,7 @@ class Config
     private function getStoreValue(
         string $path,
         $storeId = null,
-        string $scope = null
+        ?string $scope = null
     ): string {
         if (!$storeId) {
             $storeId = (int)$this->getStore()->getId();
@@ -136,7 +136,7 @@ class Config
      *
      * @return bool
      */
-    private function getFlag(string $path, int $storeId = null, string $scope = null): bool
+    private function getFlag(string $path, ?int $storeId = null, ?string $scope = null): bool
     {
         if (!$storeId) {
             $storeId = (int)$this->getStore()->getId();
@@ -157,7 +157,7 @@ class Config
      * @param int|null $storeId
      * @return bool
      */
-    public function isEnabled(int $storeId = null): bool
+    public function isEnabled(?int $storeId = null): bool
     {
         return $this->getFlag(self::XML_PATH_EXTENSION_ENABLE, $storeId);
     }
@@ -167,7 +167,7 @@ class Config
      * @param string $scope
      * @return bool
      */
-    public function isErrorEmailEnabled(int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): bool
+    public function isErrorEmailEnabled(?int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): bool
     {
         return $this->getFlag(self::XML_PATH_DEBUG_ENABLE_ERROR_EMAILS, $storeId, $scope);
     }
@@ -177,7 +177,7 @@ class Config
      * @param string $scope
      * @return string
      */
-    public function errorEmailSender(int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): string
+    public function errorEmailSender(?int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): string
     {
         return $this->getStoreValue(self::XML_PATH_DEBUG_ERROR_SENDER_EMAIL, $storeId, $scope);
     }
@@ -187,7 +187,7 @@ class Config
      * @param string $scope
      * @return string
      */
-    public function errorEmailReceiver(int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): string
+    public function errorEmailReceiver(?int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): string
     {
         return $this->getStoreValue(self::XML_PATH_DEBUG_ERROR_RECEIVER_EMAIL, $storeId, $scope);
     }
@@ -196,7 +196,7 @@ class Config
      * @param int|null $storeId
      * @return string
      */
-    public function getShippingMethod(int $storeId = null): string
+    public function getShippingMethod(?int $storeId = null): string
     {
         return $this->getStoreValue(self::XML_PATH_EXTENSION_SHIPPING_METHOD, $storeId);
     }
@@ -274,7 +274,7 @@ class Config
      * @param string $scope
      * @return null|string
      */
-    public function subscriptionErrorAdminNotificationTemplate(int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): ?string
+    public function subscriptionErrorAdminNotificationTemplate(?int $storeId = null, string $scope = ScopeInterface::SCOPE_STORE): ?string
     {
         return $this->getStoreValue(static::XML_PATH_DEBUG_ERROR_EMAIL_TEMPLATE, $storeId, $scope);
     }

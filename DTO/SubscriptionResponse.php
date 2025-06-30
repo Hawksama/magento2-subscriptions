@@ -30,7 +30,7 @@ class SubscriptionResponse
     public function __construct(
         Subscription $subscription,
         CustomerInterface $customer,
-        DateTimeInterface $prePaymentReminder = null
+        ?DateTimeInterface $prePaymentReminder = null
     ) {
         $this->subscription = $subscription;
         $this->customer = $customer;

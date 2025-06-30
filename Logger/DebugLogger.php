@@ -1,6 +1,6 @@
 <?php
-/**
- * Copyright © Magmodules.eu. All rights reserved.
+/*
+ * Copyright Magmodules.eu. All rights reserved.
  * See COPYING.txt for license details.
  */
 declare(strict_types=1);
@@ -8,35 +8,49 @@ declare(strict_types=1);
 namespace Mollie\Subscriptions\Logger;
 
 use Magento\Framework\Serialize\Serializer\Json;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 
-/**
- * DebugLogger logger class
- */
-class DebugLogger extends Logger
+class DebugLogger
 {
-
     /**
      * @var Json
      */
     private $json;
-
     /**
-     * DebugLogger constructor.
-     *
-     * @param Json $json
-     * @param string $name
-     * @param array $handlers
-     * @param array $processors
+     * @var Logger
      */
+    private $logger;
+    /**
+     * @var StreamHandler
+     */
+    private $handler;
+    /**
+     * @var Logger
+     */
+    private $instance;
+
     public function __construct(
         Json $json,
-        string $name,
-        array $handlers = [],
-        array $processors = []
+        Logger $logger,
+        StreamHandler $handler
     ) {
         $this->json = $json;
-        parent::__construct($name, $handlers, $processors);
+        $this->logger = $logger;
+        $this->handler = $handler;
+    }
+
+    private function getLogger(): Logger
+    {
+        if ($this->instance) {
+            return $this->instance;
+        }
+
+        $this->instance = $this->logger;
+        $this->instance->pushHandler($this->handler);
+
+        return $this->instance;
     }
 
     /**
@@ -46,12 +60,10 @@ class DebugLogger extends Logger
      * @param mixed $data
      *
      */
-    public function addLog(string $type, $data)
+    public function addLog(string $type, $data): void
     {
-        if (is_array($data) || is_object($data)) {
-            $this->addRecord(Logger::DEBUG, $type . ': ' . $this->json->serialize($data));
-        } else {
-            $this->addRecord(Logger::DEBUG, $type . ': ' . $data);
-        }
+        $level = class_exists(Level::class) ? Level::Debug : 100;
+        $data = is_array($data) || is_object($data) ? $this->json->serialize($data) : $data;
+        $this->getLogger()->addRecord($level, $type . ': ' . $data);
     }
 }
