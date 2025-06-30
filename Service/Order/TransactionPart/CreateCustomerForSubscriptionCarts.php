@@ -8,7 +8,6 @@ namespace Mollie\Subscriptions\Service\Order\TransactionPart;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Sales\Api\Data\OrderInterface;
-use Mollie\Payment\Config;
 use Mollie\Payment\Model\Api;
 use Mollie\Payment\Model\Client\Orders;
 use Mollie\Payment\Model\Client\Payments;
@@ -28,11 +27,6 @@ class CreateCustomerForSubscriptionCarts implements TransactionPartInterface
     private $customerRepository;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @var OrderContainsSubscriptionProduct
      */
     private $orderContainsSubscriptionProduct;
@@ -40,12 +34,10 @@ class CreateCustomerForSubscriptionCarts implements TransactionPartInterface
     public function __construct(
         Api $api,
         CustomerRepositoryInterface $customerRepository,
-        Config $config,
         OrderContainsSubscriptionProduct $orderContainsSubscriptionProduct
     ) {
         $this->api = $api;
         $this->customerRepository = $customerRepository;
-        $this->config = $config;
         $this->orderContainsSubscriptionProduct = $orderContainsSubscriptionProduct;
     }
 

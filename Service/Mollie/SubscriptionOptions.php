@@ -204,8 +204,13 @@ class SubscriptionOptions
     private function addStartDate(): void
     {
         $now = new \DateTimeImmutable();
+        $startDate = $now->add(new \DateInterval('P' . $this->getDateInterval()));
 
-        $this->options['startDate'] = $now->add(new \DateInterval('P' . $this->getDateInterval()));
+        if ($days = $this->currentOption->getTrialDays()) {
+            $startDate = $startDate->add(new \DateInterval('P' . $days . 'D'));
+        }
+
+        $this->options['startDate'] = $startDate;
     }
 
     /**
