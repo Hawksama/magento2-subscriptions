@@ -32,7 +32,7 @@ class SubscriptionAttributes implements DataPatchInterface
         $eavSetup = $this->eavSetupFactory->create();
 
         // interval amount = 3
-        // interval type = day, month, week
+        // interval type = day, month, week, year
         // interval repetition = infinite/limited
 
         if (!$eavSetup->getAttribute(Product::ENTITY, 'mollie_subscription_product')) {

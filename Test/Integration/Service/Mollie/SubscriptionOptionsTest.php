@@ -306,6 +306,43 @@ class SubscriptionOptionsTest extends IntegrationTestCase
     }
 
     /**
+     * @dataProvider addsTheStartDate
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     *
+     * @param $input
+     * @param $expected
+     */
+    public function testAddsTheDelayedStartDate($input, $expected)
+    {
+        $order = $this->loadOrder('100000001');
+        $items = $order->getItems();
+
+        /** @var OrderItemInterface $orderItem */
+        $orderItem = array_shift($items);
+        $this->setOptionIdOnOrderItem($orderItem, 'custom');
+        $this->setTheSubscriptionOnTheProduct(
+            $orderItem->getProduct(),
+            '{"identifier":"custom",' .
+            '"title":"A new custom subscription",' .
+            '"interval_amount":"' . $input['amount'] . '",' .
+            '"interval_type":"' . $input['type'] . '",' .
+            '"repetition_amount":"10",' .
+            '"repetition_type":"times"' .
+            '}'
+        );
+
+        /** @var SubscriptionOptions $instance */
+        $instance = $this->objectManager->create(SubscriptionOptions::class);
+        $result = $instance->forOrder($order);
+
+        $this->assertCount(1, $result);
+        $subscription = $result[0];
+        $this->assertInstanceOf(SubscriptionOption::class, $subscription);
+        $this->assertArrayHasKey('startDate', $subscription->toArray());
+        $this->assertEquals($expected->format('Y-m-d'), $subscription->toArray()['startDate']);
+    }
+
+    /**
      * @magentoDataFixture Magento/Sales/_files/order.php
      *
      * @return void
@@ -393,7 +430,7 @@ class SubscriptionOptionsTest extends IntegrationTestCase
         $this->assertArrayNotHasKey('shippingAddressId', $subscription->toArray()['metadata']);
     }
 
-    public function includesTheCorrectIntervalProvider()
+    public function includesTheCorrectIntervalProvider(): array
     {
         return [
             'day' => [['amount' => 7, 'type' => IntervalType::DAYS], '7 days'],
@@ -402,10 +439,11 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], '1 months'],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], '3 months'],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], '3 months'],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], '365 days'],
         ];
     }
 
-    public function addsADescriptionProvider()
+    public function addsADescriptionProvider(): array
     {
         return [
             'single day' => [['amount' => 1, 'type' => IntervalType::DAYS], 'Every day'],
@@ -415,10 +453,11 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], 'Every month'],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], 'Every 3 months'],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], 'Every 3 months'],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], 'Every year'],
         ];
     }
 
-    public function addsTheStartDate()
+    public function addsTheStartDate(): array
     {
         $now = new \DateTimeImmutable('now');
 
@@ -430,10 +469,11 @@ class SubscriptionOptionsTest extends IntegrationTestCase
             'single month' => [['amount' => 1, 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P1M'))],
             'multiple months' => [['amount' => 3, 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P3M'))],
             'float months' => [['amount' => '3.0000', 'type' => IntervalType::MONTHS], $now->add(new \DateInterval('P3M'))],
+            'year' => [['amount' => 1, 'type' => IntervalType::YEARS], $now->add(new \DateInterval('P365D'))],
         ];
     }
 
-    private function setTheSubscriptionOnTheProduct(ProductInterface $product, string $customSubscription = null): void
+    private function setTheSubscriptionOnTheProduct(ProductInterface $product, ?string $customSubscription = null): void
     {
         $product->setData('mollie_subscription_product', 1);
 

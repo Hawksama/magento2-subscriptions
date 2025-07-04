@@ -1,4 +1,4 @@
-<div class="admin__control-table-wrapper">
+<div class="admin__control-table-wrapper mollie-subscriptions-configuration">
     <table class="admin__control-table">
         <thead>
             <tr>
@@ -8,6 +8,8 @@
                 <th data-bind="i18n: 'Type'"></th>
                 <th data-bind="i18n: 'Repeat Times'"></th>
                 <th data-bind="i18n: 'Repeat Type'"></th>
+                <th data-bind="i18n: 'Trial Days'"></th>
+                <th data-bind="i18n: 'Price (Optional)'"></th>
                 <th class="col-actions" data-bind="i18n: 'Actions'"></th>
             </tr>
         </thead>
@@ -37,7 +39,8 @@
                         <option data-bind="value: value, text: label"></option>
                     </select>
                 </td>
-
+                <td><input class="admin__control-text" type="number" data-bind="value: trial_days" /></td>
+                <td><input class="admin__control-text" type="number" data-bind="value: price" /></td>
                 <td class="col-actions">
                     <button type="button" class="action-delete" data-bind="click: $parent.remove.bind($parent)">
                         <span data-bind="i18n: 'Delete'"></span>

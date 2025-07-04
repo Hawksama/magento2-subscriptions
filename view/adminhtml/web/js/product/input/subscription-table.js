@@ -57,7 +57,9 @@ define([
                     row.interval_amount,
                     row.interval_type,
                     row.repetition_amount,
-                    row.repetition_type
+                    row.repetition_type,
+                    row.trial_days,
+                    row.price
                 );
             }.bind(this));
 
@@ -80,6 +82,8 @@ define([
                     interval_type: row.interval_type(),
                     repetition_amount: row.repetition_amount(),
                     repetition_type: row.repetition_type(),
+                    trial_days: row.trial_days(),
+                    price: row.price(),
                 }
             });
 
@@ -112,19 +116,23 @@ define([
             })
         },
 
-        addRow: function (identifier, isDefault, title, interval_amount, interval_type, repetition_amount, repetition_type) {
+        addRow: function (identifier, isDefault, title, interval_amount, interval_type, repetition_amount, repetition_type, trial_days, price) {
             var titleObservable = ko.observable(title);
             var isDefaultObservable = ko.observable(isDefault || false);
             var intervalAmountObservable = ko.observable(interval_amount);
             var intervalTypeObservable = ko.observable(interval_type);
             var repetitionAmountObservable = ko.observable(repetition_amount);
             var repetitionTypeObservable = ko.observable(repetition_type);
+            var trialDaysObservable = ko.observable(trial_days);
+            var priceObservable = ko.observable(price);
 
             titleObservable.subscribe(function () { this.updateValue() }.bind(this));
             intervalAmountObservable.subscribe(function () { this.updateValue() }.bind(this));
             intervalTypeObservable.subscribe(function () { this.updateValue() }.bind(this));
             repetitionAmountObservable.subscribe(function () { this.updateValue() }.bind(this));
             repetitionTypeObservable.subscribe(function () { this.updateValue() }.bind(this));
+            trialDaysObservable.subscribe(function () { this.updateValue() }.bind(this));
+            priceObservable.subscribe(function () { this.updateValue() }.bind(this));
 
             isDefaultObservable.subscribe(function (value) {
                 if (value === true) {
@@ -142,6 +150,8 @@ define([
                 interval_type: intervalTypeObservable,
                 repetition_amount: repetitionAmountObservable,
                 repetition_type: repetitionTypeObservable,
+                trial_days: trialDaysObservable,
+                price: priceObservable
             });
         }
     });

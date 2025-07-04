@@ -92,6 +92,10 @@ class UpdateWebhookPath implements DataPatchInterface
         preg_match('/\/___store\/([^\/]+)\/|___store=([^&]+)/', $webhookUrl, $matches);
         $storeCode = $matches[1] ?? $matches[2];
 
+        if (!array_key_exists($storeCode, $this->storeCodeToId)) {
+            return;
+        }
+
         $id = $this->storeCodeToId[$storeCode];
 
         $newUrl = $this->urlBuilder->getUrl(

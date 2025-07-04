@@ -63,7 +63,7 @@ class SubscriptionOption
         array $metadata,
         string $webhookUrl,
         \DateTimeImmutable $startDate,
-        int $times = null
+        ?int $times = null
     ) {
         $this->productId = $productId;
         $this->storeId = $storeId;

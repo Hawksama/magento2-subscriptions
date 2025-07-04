@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 namespace Mollie\Subscriptions\Service\Mollie;
 
@@ -14,7 +18,7 @@ class MollieSubscriptionApi extends MollieApiClient
         return $client;
     }
 
-    public function loadByStore(int $storeId = null): \Mollie\Api\MollieApiClient
+    public function loadByStore(?int $storeId = null): \Mollie\Api\MollieApiClient
     {
         $client = parent::loadByStore($storeId);
         $client->addVersionString('MagentoSubscription');

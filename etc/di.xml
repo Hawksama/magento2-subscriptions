@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <!--
-/**
- * Copyright © Magmodules.eu. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
+  ~ Copyright Magmodules.eu. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Mollie\Subscriptions\Api\Log\RepositoryInterface" type="Mollie\Subscriptions\Model\Log\Repository"/>
@@ -14,22 +12,29 @@
     <preference for="Mollie\Subscriptions\Api\Data\SubscriptionToProductInterface" type="Mollie\Subscriptions\Model\Data\SubscriptionToProduct"/>
     <preference for="Mollie\Subscriptions\Api\Data\SubscriptionToProductSearchResultsInterface" type="Mollie\Subscriptions\Model\SubscriptionToProductSearchResults"/>
 
+    <preference for="Mollie\Subscriptions\Api\SentEmailRepositoryInterface" type="Mollie\Subscriptions\Model\SentEmailRepository" />
+    <preference for="Mollie\Subscriptions\Api\Data\SentEmailInterface" type="Mollie\Subscriptions\Model\Data\SentEmail"/>
+    <preference for="Mollie\Subscriptions\Api\Data\SentEmailSearchResultsInterface" type="Mollie\Subscriptions\Model\SentEmailSearchResults"/>
+
     <type name="Mollie\Subscriptions\Logger\ErrorLogger">
         <arguments>
-            <argument name="name" xsi:type="string">MollieSubscriptionsError</argument>
-            <argument name="handlers" xsi:type="array">
-                <item name="system" xsi:type="object">Mollie\Subscriptions\Logger\Handler\Error</item>
-            </argument>
+            <argument name="logger" xsi:type="object">mollieSubscriptionsLogger</argument>
+            <argument name="handler" xsi:type="object">Mollie\Subscriptions\Logger\Handler\Error</argument>
         </arguments>
     </type>
+
     <type name="Mollie\Subscriptions\Logger\DebugLogger">
         <arguments>
-            <argument name="name" xsi:type="string">MollieSubscriptionsDebug</argument>
-            <argument name="handlers" xsi:type="array">
-                <item name="system" xsi:type="object">Mollie\Subscriptions\Logger\Handler\Debug</item>
-            </argument>
+            <argument name="logger" xsi:type="object">mollieSubscriptionsLogger</argument>
+            <argument name="handler" xsi:type="object">Mollie\Subscriptions\Logger\Handler\Debug</argument>
         </arguments>
     </type>
+
+    <virtualType name="mollieSubscriptionsLogger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">mollie-subscriptions-error-logger</argument>
+        </arguments>
+    </virtualType>
 
     <type name="Mollie\Subscriptions\Model\Selftest\Repository">
         <arguments>
@@ -65,6 +70,7 @@
             <argument name="parts" xsi:type="array">
                 <item name="create_customer_for_subscription_carts" xsi:type="object">Mollie\Subscriptions\Service\Order\TransactionPart\CreateCustomerForSubscriptionCarts</item>
                 <item name="sequenceType" xsi:type="object">Mollie\Subscriptions\Service\Order\TransactionPart\SequenceType</item>
+                <item name="change_transaction_price_for_trial" xsi:type="object">Mollie\Subscriptions\Service\Order\TransactionPart\ChangeTransactionPriceForTrial</item>
             </argument>
         </arguments>
     </type>
@@ -169,4 +175,18 @@
     <type name="Magento\Checkout\Model\Session">
         <plugin name="mollie_subscriptions_check_for_duplicates_in_cart" type="Mollie\Subscriptions\Plugin\Checkout\Model\PreventDuplicateSubscriptionProductsInCart" />
     </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mollie_subscriptions_sentemail_listing_data_source" xsi:type="string">MollieSubscriptionsSentEmailCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="MollieSubscriptionsSentEmailCollection" type="Mollie\Subscriptions\Ui\DataProvider\SentEmail\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mollie_subscriptions_sentemail</argument>
+            <argument name="resourceModel" xsi:type="string">Mollie\Subscriptions\Model\ResourceModel\SentEmail</argument>
+        </arguments>
+    </virtualType>
 </config>

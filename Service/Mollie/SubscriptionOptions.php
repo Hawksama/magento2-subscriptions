@@ -131,6 +131,11 @@ class SubscriptionOptions
 
     private function addAmount(): void
     {
+        if ($this->currentOption->getPrice() !== null) {
+            $this->options['amount'] = $this->currentOption->getPrice();
+            return;
+        }
+
         $rowTotal = $this->orderItem->getRowTotalInclTax();
         if (!$rowTotal && $this->orderItem->getParentItem()) {
             $rowTotal = $this->orderItem->getParentItem()->getRowTotalInclTax();
@@ -163,7 +168,12 @@ class SubscriptionOptions
         $intervalType = $this->currentOption->getIntervalType();
         $intervalAmount = $this->currentOption->getIntervalAmount();
 
-        $this->options['interval'] = (int)$intervalAmount . ' ' . $intervalType;
+        $interval = (int)$intervalAmount . ' ' . $intervalType;
+        if ($intervalType == IntervalType::YEARS) {
+            $interval = '365 days';
+        }
+
+        $this->options['interval'] = $interval;
     }
 
     private function addDescription(): void
@@ -204,8 +214,13 @@ class SubscriptionOptions
     private function addStartDate(): void
     {
         $now = new \DateTimeImmutable();
+        $startDate = $now->add(new \DateInterval('P' . $this->getDateInterval()));
 
-        $this->options['startDate'] = $now->add(new \DateInterval('P' . $this->getDateInterval()));
+        if ($days = $this->currentOption->getTrialDays()) {
+            $startDate = $startDate->add(new \DateInterval('P' . $days . 'D'));
+        }
+
+        $this->options['startDate'] = $startDate;
     }
 
     /**
@@ -227,6 +242,10 @@ class SubscriptionOptions
 
         if ($interval == IntervalType::WEEKS) {
             return $intervalAmount . 'W';
+        }
+
+        if ($interval == IntervalType::YEARS) {
+            return '365D';
         }
 
         return $intervalAmount . 'M';
@@ -259,6 +278,11 @@ class SubscriptionOptions
             }
 
             return __('Every %1 months', $intervalAmount);
+        }
+
+        // 365 days is the maximum.
+        if ($intervalType == IntervalType::YEARS) {
+            return __('Every year');
         }
 
         return '';

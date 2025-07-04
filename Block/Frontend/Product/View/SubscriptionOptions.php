@@ -7,7 +7,6 @@
 namespace Mollie\Subscriptions\Block\Frontend\Product\View;
 
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product\Attribute\Source\Boolean;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;

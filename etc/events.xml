@@ -21,4 +21,10 @@
         <observer name="mollie_subscription_check_add_to_cart" instance="Mollie\Subscriptions\Observer\CheckoutCartProductAddBefore\PreventAddingSubscriptionProductsToCartWhenNoSubscriptionIsSelected" />
         <observer name="mollie_subscription_prevent_duplicate_subscription" instance="Mollie\Subscriptions\Observer\CheckoutCartProductAddBefore\PreventDuplicateSubscriptions" />
     </event>
+    <event name="mollie_validate_amount">
+        <observer name="mollie_subscription_validate_amount" instance="Mollie\Subscriptions\Observer\MollieValidateAmount\LowerAmountForTrialProducts" />
+    </event>
+    <event name="sales_quote_item_set_product">
+        <observer name="mollie_subscription_set_subscription_price_on_product" instance="Mollie\Subscriptions\Observer\SalesQuoteItemSetProduct\SetSubscriptionPriceInQuote" />
+    </event>
 </config>

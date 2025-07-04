@@ -6,6 +6,7 @@
 Day(s),Jour(s)
 Week(s),Semaine(s)
 Month(s),Mois
+Year(s),Année(s)
 Times,Fois
 Infinite,Infini
 Enabled,Activé
@@ -39,6 +40,8 @@ Disabled,Désactivé
 "Every %1 weeks","Toutes les %1 semaines"
 "Every month","Chaque mois"
 "Every %1 months","Tous les %1 mois"
+"Every year","Chaque année"
+"Every %1 years","Tous les %1 ans"
 "Every %1 %2","Chaque %1 %2"
 Cancel,Annuler
 Delete,Supprimer

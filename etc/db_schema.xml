@@ -18,4 +18,15 @@
             <column name="entity_id"/>
         </constraint>
     </table>
+
+    <table name="mollie_subscriptions_sentemail" engine="innodb" comment="sentemails">
+        <column name="entity_id" xsi:type="int" comment="entity_id" nullable="true" identity="true" unsigned="true" padding="10"/>
+        <column name="subject" xsi:type="varchar" comment="subject" nullable="true"/>
+        <column name="sender" xsi:type="varchar" comment="sender" nullable="true"/>
+        <column name="recipients" xsi:type="varchar" comment="recipients" nullable="true"/>
+        <column name="sent_at" xsi:type="datetime" comment="sent_at" nullable="true"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
 </schema>
