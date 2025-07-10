@@ -45,6 +45,10 @@ class ParseSubscriptionOptions
         $json = $this->serializer->unserialize($table);
 
         return array_map( function ($option) {
+            if (array_key_exists('price', $option) && !$option['price']) {
+                $option['price'] = 0;
+            }
+
             return $this->productSubscriptionOptionFactory->create($option);
         }, $json);
     }
