@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <!--
-/**
- * Copyright © Magmodules.eu. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
+  ~ Copyright Magmodules.eu. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
@@ -13,6 +11,7 @@
                 <version>v1.16.0</version>
                 <enable>0</enable>
                 <debug>1</debug>
+                <update_subscription_when_price_changes>0</update_subscription_when_price_changes>
             </general>
             <debug>
                 <enable_error_emails>1</enable_error_emails>

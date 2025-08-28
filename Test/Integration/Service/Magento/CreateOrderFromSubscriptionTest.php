@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 declare(strict_types=1);
 
@@ -7,7 +11,6 @@ namespace Mollie\Subscriptions\Test\Integration\Service\Magento;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Quote\Api\Data\AddressInterface;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Resources\Subscription;
 use Mollie\Payment\Api\Data\MollieCustomerInterface;
@@ -15,6 +18,7 @@ use Mollie\Payment\Api\MollieCustomerRepositoryInterface;
 use Mollie\Payment\Test\Integration\IntegrationTestCase;
 use Mollie\Payment\Test\Integration\MolliePaymentBuilder;
 use Mollie\Subscriptions\Service\Magento\CreateOrderFromSubscription;
+use stdClass;
 
 class CreateOrderFromSubscriptionTest extends IntegrationTestCase
 {
@@ -36,8 +40,11 @@ class CreateOrderFromSubscriptionTest extends IntegrationTestCase
         $payment->customerId = 'cst_testcustomer';
 
         $subscription = $this->objectManager->get(Subscription::class);
+        $subscription->amount = new stdClass();
+        $subscription->amount->value = 100;
+        $subscription->amount->currency = 'EUR';
         $subscription->customerId = 'cst_testcustomer';
-        $subscription->metadata = new \stdClass();
+        $subscription->metadata = new stdClass();
         $subscription->metadata->quantity = '1';
         $subscription->metadata->sku = 'simple';
 
@@ -74,8 +81,11 @@ class CreateOrderFromSubscriptionTest extends IntegrationTestCase
         $payment->customerId = 'cst_testcustomer';
 
         $subscription = $this->objectManager->get(Subscription::class);
+        $subscription->amount = new stdClass();
+        $subscription->amount->value = 100;
+        $subscription->amount->currency = 'EUR';
         $subscription->customerId = 'cst_testcustomer';
-        $subscription->metadata = new \stdClass();
+        $subscription->metadata = new stdClass();
         $subscription->metadata->quantity = '1';
         $subscription->metadata->sku = 'simple';
 

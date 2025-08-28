@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 declare(strict_types=1);
 
@@ -137,7 +141,7 @@ class CreateOrderFromSubscription
         $this->customer = $this->customerRepository->getById($mollieCustomer->getCustomerId());
 
         $cart = $this->getCart();
-        $this->product = $this->subscriptionAddToCart->execute($cart, $this->subscription->metadata);
+        $this->product = $this->subscriptionAddToCart->execute($cart, $this->subscription);
 
         $cart->setBillingAddress($this->formatAddress($this->getAddress('billing')));
 
