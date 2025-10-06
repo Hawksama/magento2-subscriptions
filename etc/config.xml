@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <!--
-/**
- * Copyright © Magmodules.eu. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
+  ~ Copyright Magmodules.eu. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
@@ -41,6 +39,9 @@
                 <admin_cancel_notification_template>Mollie_Subscriptions_emails_admin_cancel_notification_template</admin_cancel_notification_template>
                 <enable_customer_cancel_notification>0</enable_customer_cancel_notification>
                 <customer_cancel_notification_template>Mollie_Subscriptions_emails_customer_cancel_notification_template</customer_cancel_notification_template>
+                <enable_admin_failure_notification>1</enable_admin_failure_notification>
+                <admin_failure_notification_template>Mollie_Subscriptions_emails_admin_failure_notification_template
+                </admin_failure_notification_template>
             </emails>
         </mollie_subscriptions>
     </default>
