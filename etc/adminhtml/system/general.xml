@@ -34,5 +34,11 @@
             <config_path>mollie_subscriptions/general/allow_one_time_purchases</config_path>
             <comment>Note: This can be changed on a per-product level</comment>
         </field>
+        <field id="show_price_in_subscription_button" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Include price in subscription button</label>
+            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            <config_path>mollie_subscriptions/general/show_price_in_subscription_button</config_path>
+            <comment>Renders the subscription interval price in the purchase button. Applies to one-time purchase as well when active.</comment>
+        </field>
     </group>
 </include>
