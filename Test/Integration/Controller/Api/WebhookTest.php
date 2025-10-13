@@ -28,6 +28,7 @@ use Mollie\Payment\Test\Integration\MolliePaymentBuilder;
 use Mollie\Subscriptions\Api\Data\SubscriptionToProductInterface;
 use Mollie\Subscriptions\Api\SubscriptionToProductRepositoryInterface;
 use Mollie\Subscriptions\Service\Mollie\MollieSubscriptionApi;
+use stdClass;
 
 class WebhookTest extends ControllerTestCase
 {
@@ -251,9 +252,12 @@ class WebhookTest extends ControllerTestCase
     {
         /** @var Subscription $subscription */
         $subscription = $this->_objectManager->get(Subscription::class);
+        $subscription->amount = new stdClass();
+        $subscription->amount->value = 100;
+        $subscription->amount->currency = 'EUR';
         $subscription->id = 'sub_testsubscription';
         $subscription->customerId = 'cst_testcustomer';
-        $subscription->metadata = new \stdClass();
+        $subscription->metadata = new stdClass();
         $subscription->metadata->sku = 'simple';
         $subscription->nextPaymentDate = '2019-11-19';
 
@@ -273,8 +277,8 @@ class WebhookTest extends ControllerTestCase
         $payment->id = $transactionId;
         $payment->customerId = 'cst_testcustomer';
         $payment->subscriptionId = 'sub_testsubscription';
-        $payment->_links = new \stdClass();
-        $payment->_links->subscription = new \stdClass();
+        $payment->_links = new stdClass();
+        $payment->_links->subscription = new stdClass();
         $payment->_links->subscription->href = 'https://example.com/mollie/subscriptions/sub_testsubscription';
 
         return $payment;

@@ -193,6 +193,34 @@ class SubscriptionOptionsTest extends IntegrationTestCase
     /**
      * @magentoDataFixture Magento/Sales/_files/order.php
      */
+    public function testAddsTheOptionId(): void
+    {
+        $order = $this->loadOrder('100000001');
+        $items = $order->getItems();
+
+        /** @var OrderItemInterface $orderItem */
+        $orderItem = array_shift($items);
+
+        $this->setOptionIdOnOrderItem($orderItem, 'weekly-finite');
+        $this->setTheSubscriptionOnTheProduct($orderItem->getProduct());
+
+        $orderItem->getProduct()->setData('sku', 'example-sku');
+
+        /** @var SubscriptionOptions $instance */
+        $instance = $this->objectManager->create(SubscriptionOptions::class);
+        $result = $instance->forOrder($order);
+
+        $this->assertCount(1, $result);
+        $subscription = $result[0];
+        $this->assertInstanceOf(SubscriptionOption::class, $subscription);
+        $this->assertArrayHasKey('metadata', $subscription->toArray());
+        $this->assertArrayHasKey('optionId', $subscription->toArray()['metadata']);
+        $this->assertEquals('weekly-finite', $subscription->toArray()['metadata']['optionId']);
+    }
+
+    /**
+     * @magentoDataFixture Magento/Sales/_files/order.php
+     */
     public function testAddsTheAmount()
     {
         $order = $this->loadOrder('100000001');
