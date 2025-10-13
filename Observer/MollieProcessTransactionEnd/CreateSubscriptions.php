@@ -155,6 +155,7 @@ class CreateSubscriptions implements ObserverInterface
         $model->setProductId($subscriptionOptions->getProductId());
         $model->setStoreId($subscriptionOptions->getStoreId());
         $model->setNextPaymentDate($subscription->nextPaymentDate);
+        $model->setOptionId($subscriptionOptions->getOptionId());
 
         $model = $this->subscriptionToProductRepository->save($model);
 

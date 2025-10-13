@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright Magmodules.eu. All rights reserved.
+ * See COPYING.txt for license details.
+ */
 
 declare(strict_types=1);
 
@@ -137,12 +141,15 @@ class CreateOrderFromSubscription
         $this->customer = $this->customerRepository->getById($mollieCustomer->getCustomerId());
 
         $cart = $this->getCart();
-        $this->product = $this->subscriptionAddToCart->execute($cart, $this->subscription->metadata);
+        if (!$this->subscriptionProductIsVirtual()) {
+            $cart->setShippingAddress($this->formatAddress($this->getAddress('shipping')));
+        }
 
         $cart->setBillingAddress($this->formatAddress($this->getAddress('billing')));
+        $this->product = $this->subscriptionAddToCart->execute($cart, $this->subscription);
 
         if (!$this->product->getIsVirtual()) {
-            $this->setShippingAddress($cart);
+            $this->configureShipping($cart);
         }
 
         $cart->getPayment()->addData(['method' => 'mollie_methods_' . $molliePayment->method]);
@@ -195,11 +202,8 @@ class CreateOrderFromSubscription
         return $quoteAddress;
     }
 
-    private function setShippingAddress(CartInterface $cart)
+    private function configureShipping(CartInterface $cart)
     {
-        $shippingAddress = $this->formatAddress($this->getAddress('shipping'));
-        $cart->setShippingAddress($shippingAddress);
-
         $shippingAddress = $cart->getShippingAddress();
         $shippingAddress->setCollectShippingRates(true);
         $shippingAddress->collectShippingRates();
@@ -232,5 +236,14 @@ class CreateOrderFromSubscription
         }
 
         return $this->addressRepository->getById($this->customer->getDefaultBilling());
+    }
+
+    private function subscriptionProductIsVirtual(): bool
+    {
+        $metadata = $this->subscription->metadata;
+        $sku = $metadata->sku;
+        $parentSku = isset($metadata->parent_sku) ? $metadata->parent_sku : null;
+
+        return $this->productRepository->get($parentSku ?: $sku)->getIsVirtual();
     }
 }
